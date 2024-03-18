@@ -18,7 +18,7 @@ public class ProductRestController {
         this.productRepository = productRepository;
     }
 
-    @GetMapping("/product/{id}") // http://localhost:8080/api-v1/product/*
+    @GetMapping("/product/{id}") // http://localhost:8080/api-v1/product/$
     public Optional<Product> get(@PathVariable("id") Long id){
         return productRepository.findById(id);
     }
@@ -33,7 +33,7 @@ public class ProductRestController {
         productRepository.save(product);
     }
 
-    @DeleteMapping("/product/{id}") // http://localhost:8080/api-v1/product/*
+    @DeleteMapping("/product/{id}") // http://localhost:8080/api-v1/product/$
     public void delete(@PathVariable("id") Long id){
         productRepository.deleteProductById(id);
     }

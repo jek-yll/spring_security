@@ -1,4 +1,4 @@
-package com.example.springsecurity.security;
+package com.example.springsecurity.security.config;
 
 import lombok.Data;
 import org.springframework.context.annotation.Bean;
@@ -27,8 +27,6 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorize) -> authorize
                         .anyRequest().authenticated()
-//                        .requestMatchers("/api-v1/products").permitAll()
-//                        .requestMatchers("/api-v1/product/post").authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())
                 .formLogin(Customizer.withDefaults());
@@ -42,19 +40,5 @@ public class SecurityConfig {
         return new JdbcUserDetailsManager(dataSource);
 
     }
-
-
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        UserDetails userDetails = User.builder()
-//                .username("user")
-//                .password("{noop}password")
-//                .roles("USER")
-//                .build();
-//
-//        return new InMemoryUserDetailsManager(userDetails);
-//    }
-
-
 
 }
