@@ -11,7 +11,6 @@ import java.util.Optional;
 @RequestMapping("/api-v1")
 public class ProductRestController {
 
-
     private final ProductRepository productRepository;
 
     public ProductRestController(ProductRepository productRepository) {

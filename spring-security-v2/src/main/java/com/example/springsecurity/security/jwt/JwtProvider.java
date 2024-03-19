@@ -1,5 +1,6 @@
 package com.example.springsecurity.security.jwt;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -13,7 +14,7 @@ import java.util.Base64;
 import java.util.Date;
 
 @Component
-public class JwtTokenProvider {
+public class JwtProvider {
 
     @Value("${jwt.secret}")
     public String secret;
@@ -43,12 +44,23 @@ public class JwtTokenProvider {
             Jwts.parserBuilder()
                     .setSigningKey(getSigninKey())
                     .build()
-                    .parseClaimsJws(token);
+                    .parseClaimsJwt(token);
             return true;
         } catch (Exception e){
-            throw new AuthenticationCredentialsNotFoundException("jwt expired ou incorrect");
+            throw new AuthenticationCredentialsNotFoundException("jwt expired or incorrect");
 
         }
+    }
+
+    public String getUserNameFromToken(String token){
+
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(getSigninKey())
+                .build()
+                .parseClaimsJwt(token)
+                .getBody();
+        return claims.getSubject();
+
     }
 
 }
