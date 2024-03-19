@@ -44,7 +44,7 @@ public class JwtProvider {
             Jwts.parserBuilder()
                     .setSigningKey(getSigninKey())
                     .build()
-                    .parseClaimsJwt(token);
+                    .parseClaimsJws(token);
             return true;
         } catch (Exception e){
             throw new AuthenticationCredentialsNotFoundException("jwt expired or incorrect");
@@ -57,7 +57,7 @@ public class JwtProvider {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(getSigninKey())
                 .build()
-                .parseClaimsJwt(token)
+                .parseClaimsJws(token)
                 .getBody();
         return claims.getSubject();
 
