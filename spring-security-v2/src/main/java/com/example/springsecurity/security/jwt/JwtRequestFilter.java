@@ -7,12 +7,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.security.sasl.AuthenticationException;
+
 import java.io.IOException;
 
 @Component
@@ -21,6 +22,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private JwtProvider jwtProvider;
     @Autowired
     private UserService userService;
+    @Autowired
+    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
@@ -28,23 +31,17 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             String token = getJwtFromRequest(request);
 
             if (token != null && jwtProvider.validateToken(token)){
-
                 String username = jwtProvider.getUserNameFromToken(token);
-
                 UserDetails userDetails = userService.loadUserByUsername(username);
-
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails,null, userDetails.getAuthorities());
-
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
                 filterChain.doFilter(request, response);
+
         } catch (AuthenticationException e){
-
+            jwtAuthenticationEntryPoint.commence(request, response, e);
         }
-
-
     }
-
 
     private String getJwtFromRequest(HttpServletRequest request){
         String bearerToken = request.getHeader("Authorization");
