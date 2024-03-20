@@ -34,7 +34,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/auth/**", "/notices", "/contact" ).permitAll()
-                        .requestMatchers("/myAccount", "/myLoans", "/myCards").hasAnyRole("USER")
+                        .requestMatchers("/myAccount", "/myLoans", "/myCards").hasRole("USER")
                         .requestMatchers("/myBalance").hasAnyRole("ADMIN", "USER")
                         .anyRequest().authenticated()
                 )
