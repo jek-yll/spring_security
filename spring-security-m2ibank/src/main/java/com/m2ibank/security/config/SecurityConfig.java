@@ -34,8 +34,8 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/auth/**", "/notices", "/contact" ).permitAll()
-                        .requestMatchers("/myAccount", "/myLoans", "/myBalance", "/myCards").hasAnyRole("USER")
-                        .requestMatchers("/myBalance").hasAnyRole("ADMIN")
+                        .requestMatchers("/myAccount", "/myLoans", "/myCards").hasAnyRole("USER")
+                        .requestMatchers("/myBalance").hasAnyRole("ADMIN", "USER")
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthenticationEntryPoint))
