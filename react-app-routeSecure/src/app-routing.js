@@ -1,32 +1,35 @@
-import { createBrowserRouter, redirect } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import Login from "./components/Login";
 import ProtectedRoute from "./shared/ProtectedRoute";
 import ProductList from "./components/ProductList";
 import ProductForm from "./components/ProductForm";
 import Register from "./components/Register";
-import Layout from "./shared/Layout";
+import Header from "./shared/Header";
+
 
 
 const router = createBrowserRouter([
     {
-        path: "/", 
-        element : <Layout><Login/></Layout>
-    }, 
-    {
-        path: "/login",
-        element: <Layout><Login/></Layout>
-    },
-    {
-        path: "register",
-        element: <Layout><Register /></Layout>
-    },
-    {
-        path: "/products",
-        element: <Layout><ProtectedRoute><ProductList/></ProtectedRoute></Layout>
-    },
-    {
-        path: "/create-product",
-        element: <Layout><ProtectedRoute><ProductForm/></ProtectedRoute></Layout>
+        path: "/",
+        element: <Header/>,
+        children: [
+            {
+                path: "/login",
+                element: <Login/>
+            },
+            {
+                path: "/register",
+                element: <Register />
+            },
+            {
+                path: "/products",
+                element: <ProtectedRoute><ProductList/></ProtectedRoute>
+            },
+            {
+                path: "/create-product",
+                element: <ProtectedRoute><ProductForm/></ProtectedRoute>
+            }
+        ]
     }
 
 ])
